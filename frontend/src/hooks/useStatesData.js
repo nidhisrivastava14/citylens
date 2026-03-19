@@ -15,7 +15,7 @@ export function useStatesData() {
   useEffect(() => {
     Promise.all([
       fetch(`${API}/states`).then(r => r.json()),
-      fetch(`${API}/summary`).then(r => r.json()),
+      fetch(`${API}/states/summary`).then(r => r.json()),
     ])
       .then(([sd, sum]) => {
         setStates(sd.data  || []);
