@@ -1,77 +1,94 @@
-# CityLens
+## CityLens — Data-Driven Dashboard for Indian State Insights
 
-A fullstack dashboard for exploring crime, air quality, literacy and population data across Indian states. Built this because my friend was doing data analytics research on state-level indicators and we wanted a better way to explore the data than reading through spreadsheets.
+CityLens is a full-stack interactive dashboard designed to explore key socio-economic indicators across Indian states, including crime rate, air quality (AQI), literacy, and population. The goal is to provide an intuitive alternative to static datasets by enabling visual, comparative, and interactive exploration.
 
-## What it does
+---
 
-- Interactive Leaflet map of India — click any state to see its stats
-- Switch between 4 indicators: Crime Rate, AQI, Literacy, Population
-- Safe State Finder — set your own thresholds with sliders and find states that match
-- State report cards graded A–F
-- Crime vs Literacy scatter plot with trend line (built manually in SVG, no chart lib)
-- Tableau dashboard integration for deeper cuts
+### Features
 
-## Stack
+* **Interactive Map (Leaflet.js)**
+  Visualize India at the state level. Click on any state to view detailed statistics.
 
-**Frontend** — React 18, Leaflet.js for the map, CSS variables for theming. No UI lib, everything is custom.
+* **Multi-Indicator Analysis**
+  Dynamically switch between Crime Rate, AQI, Literacy, and Population.
 
-**Backend** — Node.js + Express. 6 REST endpoints. Data lives in `data.js` for now — eventually want to move this to a proper DB and pull live data.
+* **Safe State Finder**
+  Apply custom thresholds using sliders to identify states matching specific criteria.
 
-## Running locally
+* **State Report Cards**
+  Automated grading system (A–F) based on selected indicators.
 
-You need Node.js installed. Then open two terminals:
+* **Custom Data Visualizations**
+
+  * Crime vs Literacy scatter plot with trend line (built using raw SVG)
+  * KPI cards with sparkline trends
+
+* **Tableau Integration**
+  Embedded dashboard for deeper analytical insights.
+
+---
+
+### Tech Stack
+
+**Frontend**
+React 18, Leaflet.js, custom CSS (no UI libraries)
+
+**Backend**
+Node.js, Express.js (REST API with 6 endpoints)
+
+**Data Layer**
+Currently static (`data.js`), with plans to migrate to a database and integrate live APIs.
+
+---
+
+### Running Locally
 
 ```bash
-# Terminal 1 — backend
+# Backend
 cd backend
 npm install
-npm run dev      # runs on :5000
-```
+npm run dev   # runs on :5000
 
-```bash
-# Terminal 2 — frontend
+# Frontend
 cd frontend
 npm install
-npm start        # runs on :3000
+npm start     # runs on :3000
 ```
 
-## Project structure
+---
 
-```
+### Project Structure
+
+```bash
 citylens/
 ├── backend/
-│   ├── server.js          express API, 6 routes
-│   ├── data.js            state + city dataset
+│   ├── server.js
+│   ├── data.js
 │   └── package.json
 └── frontend/
     ├── src/
-    │   ├── App.js                 root component + modals
+    │   ├── App.js
     │   ├── components/
-    │   │   ├── Navbar.jsx         top nav with indicator switcher + search
-    │   │   ├── Sidebar.jsx        state detail panel
-    │   │   ├── MapView.jsx        leaflet map wrapper
-    │   │   ├── KPICard.jsx        stat card with sparkline
-    │   │   ├── Sparkline.jsx      tiny SVG trend line
-    │   │   ├── ScatterPlot.jsx    crime vs literacy chart (raw SVG)
-    │   │   ├── ReportCards.jsx    A-F graded state cards
-    │   │   └── SafeCityFinder.jsx slider-based state filter
     │   ├── hooks/
-    │   │   └── useStatesData.js   data fetching hook
     │   └── utils/
-    │       └── helpers.js         formatters, color fns, grading logic
     └── package.json
 ```
 
-## Data
+---
 
-Crime data is from NCRB (National Crime Records Bureau) reports for 2021–2023.
-AQI data is from CPCB (Central Pollution Control Board).
-Literacy and population from Census 2011 (latest available at state level).
+### Data Sources
 
-Note: Manipur 2023 crime rate (561/lakh) is excluded from comparisons — this is due to the ethnic conflict that year, not a regular law-and-order figure.
+* NCRB (Crime Data, 2021–2023)
+* CPCB (Air Quality Index)
+* Census 2011 (Literacy & Population)
 
-## TODO
-- [ ] Add a database (currently all data is hardcoded)
-- [ ] Live AQI feed from CPCB API
-- [ ] Mobile responsive layout
-- [ ] Add district-level data
+*Note: Outliers such as Manipur (2023 crime rate) are excluded from comparative analysis to maintain data consistency.*
+
+---
+
+### Roadmap
+
+* [ ] Migrate to database (MongoDB/PostgreSQL)
+* [ ] Integrate live AQI API
+* [ ] Improve mobile responsiveness
+* [ ] Add district-level granularity
