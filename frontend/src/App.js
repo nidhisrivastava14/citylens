@@ -144,58 +144,6 @@ function DeepDiveModal({ data, states, onClose }) {
 
 // ── TABLEAU MODAL ─────────────────────────────────────────────────────────────
 function TableauModal({ onClose }) {
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    // create the viz container div
-    const div = document.createElement('div');
-    div.id = 'tableauVizContainer';
-    div.style.cssText = 'position:relative;width:100%;height:100%;';
-
-    const obj = document.createElement('object');
-    obj.className = 'tableauViz';
-    obj.style.cssText = 'display:none;';
-
-    const params = [
-      ['host_url',             'https%3A%2F%2Fpublic.tableau.com%2F'],
-      ['embed_code_version',   '3'],
-      ['site_root',            ''],
-      ['name',                 'citylens_1/CityLensDashboard'],
-      ['tabs',                 'no'],
-      ['toolbar',              'yes'],
-      ['static_image',         'https://public.tableau.com/static/images/ci/citylens_1/CityLensDashboard/1.png'],
-      ['animate_transition',   'yes'],
-      ['display_static_image', 'yes'],
-      ['display_spinner',      'yes'],
-      ['display_overlay',      'yes'],
-      ['display_count',        'yes'],
-      ['language',             'en-US'],
-      ['filter',               'publish=yes'],
-    ];
-
-    params.forEach(([name, value]) => {
-      const p = document.createElement('param');
-      p.name  = name;
-      p.value = value;
-      obj.appendChild(p);
-    });
-
-    div.appendChild(obj);
-    containerRef.current.appendChild(div);
-
-    // inject Tableau script
-    const script = document.createElement('script');
-    script.src   = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-    obj.parentNode.insertBefore(script, obj);
-
-    return () => {
-      // cleanup on unmount
-      if (containerRef.current) containerRef.current.innerHTML = '';
-    };
-  }, []);
-
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 99999, display: 'flex', flexDirection: 'column', background: 'rgba(5,7,12,0.97)', animation: 'fadeIn 0.25s ease' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1.5rem', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
@@ -212,7 +160,16 @@ function TableauModal({ onClose }) {
           ✕
         </button>
       </div>
-      <div ref={containerRef} style={{ flex: 1, overflow: 'auto', background: '#fff' }} />
+      <div style={{ flex: 1, overflow: 'hidden' }}>
+        <iframe
+          src="https://public.tableau.com/views/citylens_1/CityLensDashboard?:embed=y&:display_count=yes&:showVizHome=no&:toolbar=yes"
+          width="100%"
+          height="100%"
+          frameBorder="0"
+          title="CityLens Tableau Dashboard"
+          style={{ display: 'block' }}
+        />
+      </div>
       <div style={{ display: 'flex', gap: '1.5rem', padding: '0.6rem 1.5rem', borderTop: '1px solid var(--border)', flexShrink: 0, flexWrap: 'wrap' }}>
         {[['🖱️','Click a state to filter'],['🔄','Use dropdown to switch indicators'],['↩️','Click empty space to reset'],['📜','Scroll inside for more charts']].map(([icon, text]) => (
           <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.72rem', color: 'var(--muted)' }}>
@@ -223,6 +180,8 @@ function TableauModal({ onClose }) {
     </div>
   );
 }
+
+ 
 
 // ── LEGEND ────────────────────────────────────────────────────────────────────
 function MapLegend({ indicator }) {
